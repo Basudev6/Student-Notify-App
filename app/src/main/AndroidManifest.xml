@@ -12,10 +12,16 @@
         android:theme="@style/Theme.StudentNotifyApp"
         tools:targetApi="31">
         <activity
+            android:name=".Student.StudentPage"
+            android:exported="false" />
+        <activity
             android:name=".Admin.StudentRegister"
             android:exported="false" />
         <activity
             android:name=".Admin.AdminPage"
+            android:exported="false" />
+        <activity
+            android:name=".Admin.Actions"
             android:exported="false" />
         <activity
             android:name=".Login"
