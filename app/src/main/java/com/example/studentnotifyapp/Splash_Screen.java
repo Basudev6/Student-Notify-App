@@ -21,6 +21,6 @@ public class Splash_Screen extends AppCompatActivity {
                 startActivity(main);
                 finish();
             }
-        },2000);
+        },1000);
     }
 }

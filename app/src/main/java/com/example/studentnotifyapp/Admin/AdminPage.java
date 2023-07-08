@@ -5,26 +5,20 @@ import static com.example.studentnotifyapp.R.id.admin_home;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.FrameLayout;
-import android.widget.Toast;
 
 import com.example.studentnotifyapp.Login;
 import com.example.studentnotifyapp.R;
-import com.google.android.material.bottomnavigation.BottomNavigationItemView;
-import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import java.util.Objects;
 
 public class AdminPage extends AppCompatActivity {
 
@@ -56,10 +50,11 @@ public class AdminPage extends AppCompatActivity {
                 }
                 else if(id==R.id.admin_Action)
                 {
-                    loadFrag(new Actions(),false);
+                    loadFrag(new ActionsFragment(),false);
                 }
                 else{
                     AlertDialog.Builder logoutDialog = new AlertDialog.Builder(AdminPage.this);
+                    logoutDialog.setCancelable(false);
                     logoutDialog.setTitle("Logout");
                     logoutDialog.setMessage("Do you really want to logout?");
                     logoutDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -70,8 +65,10 @@ public class AdminPage extends AppCompatActivity {
                             editor = sharedPreferences.edit();
                             editor.putString("isLogin","no");
                             editor.commit();
+                            finishAffinity();
                             Intent loginIntent = new Intent(getApplicationContext(), Login.class);
                             startActivity(loginIntent);
+
                         }
 
                     });
@@ -89,7 +86,7 @@ public class AdminPage extends AppCompatActivity {
                                     bnView.getMenu().getItem(0).setChecked(true);
 
                                 }
-                                if (currentFragment instanceof Actions) {
+                                if (currentFragment instanceof ActionsFragment) {
                                     bnView.getMenu().getItem(1).setChecked(true);
                                 }
 
@@ -120,7 +117,7 @@ public class AdminPage extends AppCompatActivity {
                        bnView.getMenu().getItem(0).setChecked(true);
 
                     }
-                    if (currentFragment instanceof Actions) {
+                    if (currentFragment instanceof ActionsFragment) {
                         bnView.getMenu().getItem(1).setChecked(true);
                     }
 

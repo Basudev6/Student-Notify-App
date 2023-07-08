@@ -95,7 +95,7 @@ public class Login extends AppCompatActivity {
                               String password = txt_password.getText().toString();
 
                             if (dataSnapshot.hasChild(username)) {
-                                Toast.makeText(Login.this, "abcd", Toast.LENGTH_SHORT).show();
+
                                 DataSnapshot userSnapshot = dataSnapshot.child(username);
 
                                 

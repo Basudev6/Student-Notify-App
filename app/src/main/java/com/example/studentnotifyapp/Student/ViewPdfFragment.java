@@ -1,5 +1,6 @@
 package com.example.studentnotifyapp.Student;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.studentnotifyapp.R;
@@ -23,59 +25,61 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class HomeStudentFragment extends Fragment {
+public class ViewPdfFragment extends Fragment {
 
 
-    private RecyclerView noticeImageRecycler;
+
+    private RecyclerView pdfRecycler;
     private DatabaseReference reference;
-    private List<ImageNoticeData> list;
-    private ImageNoticeAdapter adapter;
-
-    public HomeStudentFragment() {
+    private List<PdfData> list;
+    private PdfAdapter adapter;
+    private ProgressDialog pd;
+    public ViewPdfFragment() {
         // Required empty public constructor
     }
+
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_home_student, container, false);
+        View v = inflater.inflate(R.layout.fragment_view_pdf, container, false);
 
+        pd= new ProgressDialog(getContext());
+        pd.setTitle("Please wait...");
+        pd.setMessage("loading pdf");
+        pd.setCanceledOnTouchOutside(false);
+        pd.show();
 
-        noticeImageRecycler = v.findViewById(R.id.imgNoticeRecycler);
-        reference = FirebaseDatabase.getInstance().getReference().child("NoticeImage");
-
-        noticeImageRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
-        noticeImageRecycler.setHasFixedSize(true);
-
+        pdfRecycler = v.findViewById(R.id.pdfRecycler);
+        reference = FirebaseDatabase.getInstance().getReference().child("pdf");
         getData();
-
         return v;
     }
-
-    private void getData() {
+    public void getData()
+    {
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
                 list = new ArrayList<>();
                 for(DataSnapshot dataSnapshot : snapshot.getChildren()){
-                    ImageNoticeData data = dataSnapshot.getValue(ImageNoticeData.class);
-                    list.add(0,data);
+                    PdfData data = dataSnapshot.getValue(PdfData.class);
+                    list.add(data);
                 }
-                adapter = new ImageNoticeAdapter(getContext(),list);
-                adapter.notifyDataSetChanged();
-                noticeImageRecycler.setAdapter(adapter);
-
-
+                adapter = new PdfAdapter(getContext(),list);
+                pdfRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
+                pd.dismiss();
+                pdfRecycler.setAdapter(adapter);
 
             }
-
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
+                pd.dismiss();
                 Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
