@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.studentnotifyapp.BaseFragment;
 import com.example.studentnotifyapp.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -23,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class HomeStudentFragment extends Fragment {
+public class HomeStudentFragment extends BaseFragment {
 
 
     private RecyclerView noticeImageRecycler;
@@ -44,7 +45,7 @@ public class HomeStudentFragment extends Fragment {
 
 
         noticeImageRecycler = v.findViewById(R.id.imgNoticeRecycler);
-        reference = FirebaseDatabase.getInstance().getReference().child("NoticeImage");
+        reference = FirebaseDatabase.getInstance().getReference().child("Notice");
 
         noticeImageRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
         noticeImageRecycler.setHasFixedSize(true);

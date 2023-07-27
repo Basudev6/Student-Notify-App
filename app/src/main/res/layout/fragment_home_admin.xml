@@ -6,8 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="5dp"
-    android:background="#B8B5B0"
+    android:layout_margin="5dp"
     android:id="@+id/admin_home"
     tools:context=".Admin.HomeAdminFragment">
 
@@ -20,6 +19,28 @@
         android:textColor="@color/black"
         android:layout_gravity="center"
         android:layout_margin="20dp"
+        />
+    <TextView
+        android:id="@+id/txtquots"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/edit_text"
+        android:text="kdfkdkfdjfkdfjdkjfdkfkdfkdjfkdfj"
+        android:textStyle="italic"
+        android:layout_gravity="right"
+        android:textSize="18sp"
+        android:layout_marginTop="15mm"
+        android:visibility="gone"
+        android:padding="5dp"
+        />
+    <TextView
+        android:id="@+id/txtauthor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:text="djdkkdjfkd"
+        android:visibility="gone"
+        android:layout_marginTop="10dp"
         />
 
 </LinearLayout>

@@ -1,22 +1,30 @@
 package com.example.studentnotifyapp.Admin;
 
 public class HelperClass {
-    String address, phone ,password;
+    String fullname,username, address, phone ,password;
 
-    public HelperClass( String address, String phone, String password) {
-//        this.username = username;
+    public HelperClass(String fullname, String username,String address, String phone, String password) {
+        this.fullname=fullname;
+        this.username = username;
         this.address = address;
         this.phone = phone;
         this.password = password;
     }
 
-//    public String getUsername() {
-//        return username;
-//    }
+    public String getFullname(){
+        return fullname;
+    }
+    public void setFullname(String fullname) {
 
-//    public void setUsername(String username) {
-//        this.username = username;
-//    }
+        this.fullname = fullname;
+    }
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
     public String getAddress() {
         return address;

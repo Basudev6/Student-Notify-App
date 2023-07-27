@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.studentnotifyapp.BaseAcitvity;
 import com.example.studentnotifyapp.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -34,7 +35,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 
-public class SendPdf extends AppCompatActivity {
+public class SendPdf extends BaseAcitvity {
 
     private CardView addPdf;
     private EditText pdfTitle;

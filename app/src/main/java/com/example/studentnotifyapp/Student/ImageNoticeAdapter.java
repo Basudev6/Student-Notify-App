@@ -21,7 +21,7 @@ import java.util.List;
 public  class ImageNoticeAdapter extends RecyclerView.Adapter<ImageNoticeAdapter.ImageNoticeViewHolder>{
 
     private Context context;
-    private List<ImageNoticeData> list;
+    private final List<ImageNoticeData> list;
 
     public ImageNoticeAdapter(Context context, List<ImageNoticeData> list) {
         this.context = context;
@@ -37,17 +37,27 @@ public  class ImageNoticeAdapter extends RecyclerView.Adapter<ImageNoticeAdapter
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ImageNoticeViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull ImageNoticeViewHolder holder,final int position) {
 
         holder.postDate.setText("Date: "+list.get(position).getDate());
         holder.postTime.setText("Time: "+list.get(position).getTime());
         holder.noticeTitle.setText(list.get(position).getTitle());
 
+
         try{
-            if(list.get(position).getImage()!= null)
+            if(!list.get(position).getImage().equals(""))
             {
+                holder.noticeImage.setVisibility(View.VISIBLE);
+                holder.noticeDescription.setVisibility(View.GONE);
                 Glide.with(context).load(list.get(position).getImage()).placeholder(R.drawable.ic_launcher_background)
                     .error(R.drawable.ic_launcher_background).into(holder.noticeImage);
+
+            }
+            if(!list.get(position).getDescription().equals(""))
+            {
+                holder.noticeDescription.setVisibility(View.VISIBLE);
+                holder.noticeDescription.setText(list.get(position).getDescription());
+                holder.noticeImage.setVisibility(View.GONE);
             }
         }
         catch(Exception e){
@@ -74,13 +84,15 @@ public  class ImageNoticeAdapter extends RecyclerView.Adapter<ImageNoticeAdapter
         private TextView postTime;
         private TextView noticeTitle;
         private ImageView noticeImage;
+        private TextView noticeDescription;
         public ImageNoticeViewHolder(@NonNull View itemView) {
             super(itemView);
 
             postDate = itemView.findViewById(R.id.date);
             postTime = itemView.findViewById(R.id.time);
             noticeTitle = itemView.findViewById(R.id.title_notc);
-            noticeImage = itemView.findViewById(R.id.img_notc); 
+            noticeImage = itemView.findViewById(R.id.img_notc);
+            noticeDescription = itemView.findViewById(R.id.description);
         }
 
 

@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.example.studentnotifyapp.BaseFragment;
 import com.example.studentnotifyapp.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -25,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class ViewPdfFragment extends Fragment {
+public class ViewPdfFragment extends BaseFragment {
 
 
 

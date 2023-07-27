@@ -7,11 +7,12 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.example.studentnotifyapp.R;
+import com.github.chrisbanes.photoview.PhotoView;
 
 public class FullImageView extends AppCompatActivity {
 
 
-    private ImageView imageView;
+    private PhotoView imageView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

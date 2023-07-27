@@ -9,6 +9,7 @@
     android:layout_margin="10dp"
     tools:context=".Admin.SendNotice"
     android:gravity="center_horizontal"
+    android:id="@+id/layout_send_notice"
     >
 
     <TextView

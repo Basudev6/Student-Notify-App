@@ -1,7 +1,11 @@
 package com.example.studentnotifyapp;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
+
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,10 +21,11 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 
-public class Login extends AppCompatActivity {
+public class Login extends BaseAcitvity {
+
 
     EditText txt_username,txt_password;
     Button btn_student,btn_admin;
@@ -33,6 +38,7 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+
         sharedPreferences = this.getSharedPreferences("login",MODE_PRIVATE);
         editor = sharedPreferences.edit();
         if(sharedPreferences.getString("isLogin","false").equals("yesAdmin"))
@@ -42,7 +48,6 @@ public class Login extends AppCompatActivity {
         if(sharedPreferences.getString("isLogin","false").equals("yesStudent"))
         {
             openStudentDash();
-            Toast.makeText(this, "Welcome "+getSharedPreferences("login",MODE_PRIVATE).getString("username",""), Toast.LENGTH_SHORT).show();
         }
 
         init();
@@ -64,6 +69,7 @@ public class Login extends AppCompatActivity {
                     editor.commit();
 
                     openAdminDash();
+
 
                 }
                 else{
@@ -92,22 +98,28 @@ public class Login extends AppCompatActivity {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             String username =txt_username.getText().toString().trim();
-                              String password = txt_password.getText().toString();
+                            String password = txt_password.getText().toString();
 
+                            String HashPassword;
+                            try {
+                               HashPassword = hashPassword(password);
+                            } catch (NoSuchAlgorithmException e) {
+                                throw new RuntimeException(e);
+                            }
                             if (dataSnapshot.hasChild(username)) {
 
                                 DataSnapshot userSnapshot = dataSnapshot.child(username);
 
                                 
                                     String passwordFromDB = userSnapshot.child("password").getValue(String.class);
-                                    if (passwordFromDB.equals(password)) {
+                                    if (passwordFromDB.equals(HashPassword)) {
                                         editor.putString("isLogin","yesStudent");
                                         editor.putString("username",username);
                                         editor.commit();
 
                                         openStudentDash();
+                                        FirebaseMessaging.getInstance().subscribeToTopic("studentnotifyapp");
 
-                                        Toast.makeText(Login.this, "Welcome "+getSharedPreferences("login",MODE_PRIVATE).getString("username",""), Toast.LENGTH_SHORT).show();
                                     } 
                                     else {
                                         
@@ -152,4 +164,12 @@ public class Login extends AppCompatActivity {
         startActivity(stuLoginIntent);
         finish();
     }
+    public String hashPassword(String pass) throws NoSuchAlgorithmException {
+
+        MessageDigest md = MessageDigest.getInstance("MD5");
+        byte[] messageDigest = md.digest(pass.getBytes());
+        BigInteger bigInt = new BigInteger(1,messageDigest);
+        return bigInt.toString(16);
+    }
+
 }

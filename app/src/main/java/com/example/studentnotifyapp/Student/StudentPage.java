@@ -1,5 +1,6 @@
 package com.example.studentnotifyapp.Student;
 
+
 import static com.example.studentnotifyapp.R.id.admin_home;
 import static com.example.studentnotifyapp.R.id.student_home;
 
@@ -22,6 +23,7 @@ import com.example.studentnotifyapp.Admin.HomeAdminFragment;
 import com.example.studentnotifyapp.Login;
 import com.example.studentnotifyapp.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 public class StudentPage extends AppCompatActivity {
 
@@ -36,6 +38,8 @@ public class StudentPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student);
+
+
 
         bnView = findViewById(R.id.bnViewStu);
         bnView.setOnItemSelectedListener(new BottomNavigationView.OnItemSelectedListener() {
@@ -69,11 +73,14 @@ public class StudentPage extends AppCompatActivity {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
 
+                            FirebaseMessaging.getInstance().unsubscribeFromTopic("studentnotifyapp");
+
                             sharedPreferences = getSharedPreferences("login",MODE_PRIVATE);
                             editor = sharedPreferences.edit();
                             editor.putString("isLogin","no");
                             editor.putString("username","");
                             editor.commit();
+                            finishAffinity();
                             Intent loginIntent = new Intent(getApplicationContext(), Login.class);
                             startActivity(loginIntent);
                         }

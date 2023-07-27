@@ -1,6 +1,10 @@
 package com.example.studentnotifyapp.Admin;
 
+import android.content.BroadcastReceiver;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 
 import androidx.cardview.widget.CardView;
@@ -11,11 +15,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.studentnotifyapp.CheckInternet.InternetReceiver;
 import com.example.studentnotifyapp.R;
 
 public class ActionsFragment extends Fragment {
 
 
+    BroadcastReceiver broadcastReceiver=null;
+    private boolean isReceiverRegistered = false;
 
     public ActionsFragment() {
         // Required empty public constructor
@@ -26,6 +33,9 @@ public class ActionsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v=inflater.inflate(R.layout.fragment_actions, container, false);
+
+        broadcastReceiver = new InternetReceiver();
+        internetStatus();
 
         CardView register = (CardView)v.findViewById(R.id.stu_register);
         CardView viewStudent = (CardView)v.findViewById(R.id.view_student);
@@ -44,7 +54,8 @@ public class ActionsFragment extends Fragment {
         viewStudent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "view student", Toast.LENGTH_SHORT).show();
+                Intent studentIntent = new Intent(getContext(),ViewStudent.class);
+                startActivity(studentIntent);
             }
         });
         
@@ -59,7 +70,8 @@ public class ActionsFragment extends Fragment {
         discuss.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "Discuss", Toast.LENGTH_SHORT).show();
+                Intent discussIntent = new Intent(getContext(), Discuss.class);
+                startActivity(discussIntent);
 
             }
         });
@@ -76,4 +88,22 @@ public class ActionsFragment extends Fragment {
 
         return v;
     }
+    public void internetStatus()
+    {
+        if(!isReceiverRegistered)
+        {
+            getActivity().registerReceiver(broadcastReceiver,new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+            isReceiverRegistered = true;
+        }
+    }
+
+    @Override
+    public void onPause() {
+        if (isReceiverRegistered) {
+            getActivity().unregisterReceiver(broadcastReceiver);
+            isReceiverRegistered = false;
+        }
+        super.onPause();
+    }
+
 }

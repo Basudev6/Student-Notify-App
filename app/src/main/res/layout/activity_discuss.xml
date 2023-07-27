@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:layout_margin="5dp"
-    tools:context=".Student.DiscussFragment">
+    tools:context=".Admin.Discuss">
 
 
     <FrameLayout

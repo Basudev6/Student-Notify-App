@@ -5,14 +5,15 @@ public class ImageNoticeData {
     public ImageNoticeData() {
     }
 
-    String title, image, date, time, key;
+    String title,description, image, date, time;
 
-    public ImageNoticeData(String title, String image, String date, String time, String key) {
+    public ImageNoticeData(String title,String description, String image, String date, String time) {
+        this.description = description;
         this.title = title;
         this.image = image;
         this.date = date;
         this.time = time;
-        this.key = key;
+
     }
 
     public String getTitle() {
@@ -21,6 +22,15 @@ public class ImageNoticeData {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getDescription()
+    {
+        return description;
+    }
+    public void setDescription(String description)
+    {
+        this.description=description;
     }
 
     public String getImage() {
@@ -47,11 +57,4 @@ public class ImageNoticeData {
         this.time = time;
     }
 
-    public String getKey() {
-        return key;
-    }
-
-    public void setKey(String key) {
-        this.key = key;
-    }
 }

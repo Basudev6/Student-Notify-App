@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar"
+    app:cardElevation="3dp"
+    android:layout_margin="5dp">
+
+    <LinearLayout
+        android:id="@+id/stuDetails"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="10dp"
+        android:gravity="center">
+
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/avatar"
+
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="15dp">
+
+            <TextView
+                android:id="@+id/stuName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Ramprasad Poudel"
+                android:textSize="18dp"
+                />
+            <TextView
+                android:id="@+id/stuUsername"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ramprasad"
+                android:textSize="15dp"
+                android:paddingTop="4dp"/>
+            <TextView
+                android:id="@+id/stuAddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bharatput-25"
+                android:textSize="15dp"
+                android:paddingVertical="4dp"/>
+            <TextView
+                android:id="@+id/stuPhone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="9869034842"
+                android:textSize="15dp"/>
+
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>
