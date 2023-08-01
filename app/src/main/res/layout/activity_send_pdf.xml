@@ -8,6 +8,7 @@
     android:orientation="vertical"
     android:gravity="center_horizontal"
     android:layout_margin="10dp"
+    android:id="@+id/layout_send_pdf"
     tools:context=".Admin.SendPdf">
 
     <TextView

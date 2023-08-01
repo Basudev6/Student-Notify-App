@@ -1,7 +1,6 @@
 package com.example.studentnotifyapp.Admin;
 
 import android.content.BroadcastReceiver;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
@@ -13,16 +12,14 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.studentnotifyapp.CheckInternet.InternetReceiver;
 import com.example.studentnotifyapp.R;
+import com.example.studentnotifyapp.StudentRegister;
 
 public class ActionsFragment extends Fragment {
 
 
-    BroadcastReceiver broadcastReceiver=null;
-    private boolean isReceiverRegistered = false;
 
     public ActionsFragment() {
         // Required empty public constructor
@@ -34,8 +31,6 @@ public class ActionsFragment extends Fragment {
         // Inflate the layout for this fragment
         View v=inflater.inflate(R.layout.fragment_actions, container, false);
 
-        broadcastReceiver = new InternetReceiver();
-        internetStatus();
 
         CardView register = (CardView)v.findViewById(R.id.stu_register);
         CardView viewStudent = (CardView)v.findViewById(R.id.view_student);
@@ -46,8 +41,8 @@ public class ActionsFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                Intent registerIntent = new Intent(getContext(),StudentRegister.class);
-                startActivity(registerIntent);
+                Intent registrationIntent = new Intent(getContext(), ViewRegistration.class);
+                startActivity(registrationIntent);
             }
         });
         
@@ -88,22 +83,6 @@ public class ActionsFragment extends Fragment {
 
         return v;
     }
-    public void internetStatus()
-    {
-        if(!isReceiverRegistered)
-        {
-            getActivity().registerReceiver(broadcastReceiver,new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
-            isReceiverRegistered = true;
-        }
-    }
 
-    @Override
-    public void onPause() {
-        if (isReceiverRegistered) {
-            getActivity().unregisterReceiver(broadcastReceiver);
-            isReceiverRegistered = false;
-        }
-        super.onPause();
-    }
 
 }

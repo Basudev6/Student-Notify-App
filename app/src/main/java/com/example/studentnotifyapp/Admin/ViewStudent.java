@@ -1,21 +1,16 @@
 package com.example.studentnotifyapp.Admin;
 
-import static com.google.android.material.color.utilities.MaterialDynamicColors.error;
-
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.studentnotifyapp.BaseAcitvity;
+import com.example.studentnotifyapp.StudentData;
 import com.example.studentnotifyapp.R;
-import com.example.studentnotifyapp.Student.PdfAdapter;
-import com.example.studentnotifyapp.Student.PdfData;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -29,7 +24,7 @@ public class ViewStudent extends BaseAcitvity {
 
     private RecyclerView stuRecycler;
     private DatabaseReference reference;
-    private List<HelperClass> list;
+    private List<StudentData> list;
     private ViewStudentAdapter adapter;
     private ProgressDialog pd;
 
@@ -55,8 +50,11 @@ public class ViewStudent extends BaseAcitvity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 list = new ArrayList<>();
                 for(DataSnapshot dataSnapshot : snapshot.getChildren()){
-                    HelperClass data = dataSnapshot.getValue(HelperClass.class);
-                    list.add(data);
+                    StudentData data = dataSnapshot.getValue(StudentData.class);
+                    if(data!=null && data.getStatus().equals(true))
+                    {
+                        list.add(data);
+                    }
                 }
                 adapter = new ViewStudentAdapter(getApplicationContext(),list);
                 stuRecycler.setLayoutManager(new LinearLayoutManager(getApplicationContext()));

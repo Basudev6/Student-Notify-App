@@ -1,19 +1,17 @@
-package com.example.studentnotifyapp.Admin;
+package com.example.studentnotifyapp;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.studentnotifyapp.BaseAcitvity;
-import com.example.studentnotifyapp.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -89,9 +87,12 @@ public class StudentRegister extends BaseAcitvity {
         String StudentPassword = password.getText().toString();
         String StudentCPassword = cpassword.getText().toString();
 
-        if(StudentFullname.isEmpty() || StudentName.isEmpty() || StudentAddress.isEmpty() || StudentPhone.isEmpty() || StudentPassword.isEmpty())
+        if(StudentFullname.isEmpty() || StudentName.isEmpty() || StudentAddress.isEmpty() || StudentPassword.isEmpty())
         {
             Toast.makeText(StudentRegister.this, "All field must be filled", Toast.LENGTH_SHORT).show();
+        }
+        else if (StudentPhone.length()!=10) {
+            phone.setError("Invalid password");
         }
         else if(StudentPassword.length()<8)
         {
@@ -105,15 +106,11 @@ public class StudentRegister extends BaseAcitvity {
             } catch (NoSuchAlgorithmException e) {
                 throw new RuntimeException(e);
             }
-            Toast.makeText(StudentRegister.this, "Student Registered Successfully", Toast.LENGTH_SHORT).show();
-            fullname.setText(null);
-            username.setText(null);
-            address.setText(null);
-            phone.setText(null);
-            password.setText(null);
-            cpassword.setText(null);
-            HelperClass helperClass = new HelperClass(StudentFullname, StudentName, StudentAddress, StudentPhone, StuHashPass);
+            StudentData helperClass = new StudentData(StudentFullname, StudentName, StudentAddress, StudentPhone, StuHashPass,false);
             reference.child(StudentName).setValue(helperClass);
+            Toast.makeText(StudentRegister.this, "Student Registered Successfully. Wait for admin to approve.", Toast.LENGTH_SHORT).show();
+            finish();
+
         }
         else {
             Toast.makeText(StudentRegister.this, "Password and Confirm Password must be same", Toast.LENGTH_SHORT).show();

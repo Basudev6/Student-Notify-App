@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.studentnotifyapp.Admin.AdminPage;
@@ -29,6 +30,7 @@ public class Login extends BaseAcitvity {
 
     EditText txt_username,txt_password;
     Button btn_student,btn_admin;
+    TextView signup;
 
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
@@ -110,7 +112,9 @@ public class Login extends BaseAcitvity {
 
                                 DataSnapshot userSnapshot = dataSnapshot.child(username);
 
-                                
+                                Boolean status = userSnapshot.child("status").getValue(Boolean.class);
+                                if(status)
+                                {
                                     String passwordFromDB = userSnapshot.child("password").getValue(String.class);
                                     if (passwordFromDB.equals(HashPassword)) {
                                         editor.putString("isLogin","yesStudent");
@@ -120,11 +124,16 @@ public class Login extends BaseAcitvity {
                                         openStudentDash();
                                         FirebaseMessaging.getInstance().subscribeToTopic("studentnotifyapp");
 
-                                    } 
+                                    }
                                     else {
-                                        
+
                                         Toast.makeText(Login.this, "Invalid username and password", Toast.LENGTH_SHORT).show();
                                     }
+                                }
+                                else {
+                                    Toast.makeText(Login.this, "Admin has not approved you yet.Please retry after some time or contact to admin", Toast.LENGTH_SHORT).show();
+                                }
+                                 
                                 
                             } 
                             else {
@@ -141,6 +150,14 @@ public class Login extends BaseAcitvity {
                 }
             }
         });
+
+        signup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent signupIntent = new Intent(getApplicationContext(),StudentRegister.class);
+                startActivity(signupIntent);
+            }
+        });
     }
 
     public void init()
@@ -149,7 +166,9 @@ public class Login extends BaseAcitvity {
        txt_password = findViewById(R.id.login_password);
        btn_student = findViewById(R.id.student_login);
        btn_admin = findViewById(R.id.admin_login);
+       signup = findViewById(R.id.txt_signup);
     }
+
 
     public void openAdminDash()
     {

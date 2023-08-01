@@ -18,6 +18,11 @@
         android:icon="@drawable/discuss"
         />
     <item
+        android:id="@+id/Student_Profile"
+        android:title="View Profile"
+        android:icon="@drawable/profile"
+        />
+    <item
         android:id="@+id/Student_logout"
         android:title="Logout"
         android:icon="@drawable/baseline_logout_24"

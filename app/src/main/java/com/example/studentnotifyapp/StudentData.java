@@ -1,14 +1,16 @@
-package com.example.studentnotifyapp.Admin;
+package com.example.studentnotifyapp;
 
-public class HelperClass {
+public class StudentData {
     String fullname,username, address, phone ,password;
+    Boolean status;
 
-    public HelperClass(String fullname, String username,String address, String phone, String password) {
+    public StudentData(String fullname, String username, String address, String phone, String password, Boolean status) {
         this.fullname=fullname;
         this.username = username;
         this.address = address;
         this.phone = phone;
         this.password = password;
+        this.status = status;
     }
 
     public String getFullname(){
@@ -49,7 +51,14 @@ public class HelperClass {
     public void setPassword(String password) {
         this.password = password;
     }
+    public Boolean getStatus() {
+        return status;
+    }
 
-    public HelperClass() {
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
+
+    public StudentData() {
     }
 }

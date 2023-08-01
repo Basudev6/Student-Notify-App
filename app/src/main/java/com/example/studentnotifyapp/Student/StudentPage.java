@@ -61,6 +61,10 @@ public class StudentPage extends AppCompatActivity {
 
                     loadFrag(new DiscussFragment(),false);
                 }
+                else if(id==R.id.Student_Profile)
+                {
+                    loadFrag(new ProfileFragment(),false);
+                }
                 else
                 {
                     AlertDialog.Builder logoutDialog = new AlertDialog.Builder(StudentPage.this);
@@ -104,6 +108,9 @@ public class StudentPage extends AppCompatActivity {
                                 if (currentFragment instanceof DiscussFragment) {
                                     bnView.getMenu().getItem(2).setChecked(true);
                                 }
+                                if(currentFragment instanceof ProfileFragment){
+                                    bnView.getMenu().getItem(3).setChecked(true);
+                                }
 
                             }
                         }
@@ -136,6 +143,9 @@ public class StudentPage extends AppCompatActivity {
                     }
                     if (currentFragment instanceof DiscussFragment) {
                         bnView.getMenu().getItem(2).setChecked(true);
+                    }
+                    if(currentFragment instanceof ProfileFragment){
+                        bnView.getMenu().getItem(3).setChecked(true);
                     }
 
                 }

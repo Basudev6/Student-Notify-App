@@ -1,13 +1,17 @@
 package com.example.studentnotifyapp.Admin;
 
+import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -25,6 +29,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -37,6 +42,7 @@ import java.util.HashMap;
 
 public class SendPdf extends BaseAcitvity {
 
+    private static final int REQ_CODE = 201;
     private CardView addPdf;
     private EditText pdfTitle;
     private TextView pdfTextView;
@@ -68,7 +74,13 @@ public class SendPdf extends BaseAcitvity {
         addPdf.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openStorage();
+
+                if(checkPermission()){
+                    openStorage();
+                }
+                else {
+                    ActivityCompat.requestPermissions(SendPdf.this,new String[]{READ_EXTERNAL_STORAGE},REQ_CODE);
+                }
             }
         });
 
@@ -185,5 +197,32 @@ public class SendPdf extends BaseAcitvity {
             pdfTextView.setText(pdfName);
 
         }
+    }
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(requestCode == REQ_CODE){
+            if(grantResults.length>0){
+                int storage = grantResults[0];
+
+                boolean checkStorage = storage == PackageManager.PERMISSION_GRANTED;
+
+                if(checkStorage){
+                    openStorage();
+                }
+                else{
+                    Snackbar snackbar = Snackbar.make(findViewById(R.id.layout_send_pdf),"This permission in required to select pdf from your device",Snackbar.LENGTH_LONG);
+                    snackbar.show();
+                }
+
+            }
+
+        }
+
+    }
+
+    public boolean checkPermission()
+    {
+        int result = ActivityCompat.checkSelfPermission(this,READ_EXTERNAL_STORAGE);
+        return result == PackageManager.PERMISSION_GRANTED;
     }
 }
