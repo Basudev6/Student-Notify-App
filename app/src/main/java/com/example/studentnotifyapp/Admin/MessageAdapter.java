@@ -13,6 +13,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.studentnotifyapp.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
@@ -46,17 +51,35 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             holder.time.setText(list.get(position).getTime());
             holder.ownMessage.setText(list.get(position).getMessage());
 
-            holder.othersLayout.setVisibility(View.GONE);
+            holder.othersLayout.setVisibility(View.INVISIBLE);
         }
         else
         {
-            holder.othersLayout.setVisibility(View.VISIBLE);
-            holder.date.setText(list.get(position).getDate());
-            holder.time.setText(list.get(position).getTime());
-            holder.name.setText(list.get(position).getUsername());
-            holder.otherMessage.setText(list.get(position).getMessage());
+            if(list.get(position).getUsername().equals("admin"))
+            {
+                holder.othersLayout.setVisibility(View.VISIBLE);
+                holder.date.setText(list.get(position).getDate());
+                holder.time.setText(list.get(position).getTime());
+                holder.name.setText(list.get(position).getFullname());
+                holder.otherMessage.setText(list.get(position).getMessage());
 
-            holder.ownLayout.setVisibility(View.GONE);
+                holder.ownLayout.setVisibility(View.INVISIBLE);
+            }
+            else{
+
+                        String[] splitName = list.get(position).getFullname().split("\\s+");
+
+                        holder.othersLayout.setVisibility(View.VISIBLE);
+                        holder.date.setText(list.get(position).getDate());
+                        holder.time.setText(list.get(position).getTime());
+                        holder.name.setText(splitName[0]);
+                        holder.otherMessage.setText(list.get(position).getMessage());
+
+                        holder.ownLayout.setVisibility(View.INVISIBLE);
+
+
+            }
+
         }
 
 

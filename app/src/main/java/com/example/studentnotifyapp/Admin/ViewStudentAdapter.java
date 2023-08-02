@@ -1,5 +1,7 @@
 package com.example.studentnotifyapp.Admin;
 
+import static com.google.android.material.color.utilities.MaterialDynamicColors.error;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -11,15 +13,20 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.studentnotifyapp.StudentData;
 import com.example.studentnotifyapp.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ViewStudentAdapter extends RecyclerView.Adapter<ViewStudentAdapter.StudentViewHolder> {
@@ -69,7 +76,9 @@ public class ViewStudentAdapter extends RecyclerView.Adapter<ViewStudentAdapter.
             public boolean onMenuItemClick(MenuItem item) {
                 if(item.getItemId()==R.id.deleteStudent)
                 {
-                    deleteItemFromFirebase(itemId);
+
+                    deleteStudentFromFirebase(itemId);
+                    deleteMessageFromFirebase(itemId);
 
                 }
                 return true;
@@ -78,7 +87,32 @@ public class ViewStudentAdapter extends RecyclerView.Adapter<ViewStudentAdapter.
         popupMenu.show();
     }
 
-    private void deleteItemFromFirebase(String itemId) {
+    private void deleteMessageFromFirebase(String itemId) {
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("discuss");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.exists())
+                {
+                    for(DataSnapshot dataSnapshot : snapshot.getChildren()){
+                        MessageData data = dataSnapshot.getValue(MessageData.class);
+                        if(itemId.equals(data.getUsername()))
+                        {
+                            dataSnapshot.getRef().removeValue();
+                        }
+                    }
+
+                }
+            }
+            public void onCancelled(@NonNull DatabaseError error) {
+                System.out.println(error);
+            }
+        });
+
+    }
+
+    private void deleteStudentFromFirebase(String itemId) {
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("users/"+itemId);
         databaseReference.removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {

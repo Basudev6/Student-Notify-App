@@ -1,9 +1,6 @@
 package com.example.studentnotifyapp.Admin;
 
-import android.content.BroadcastReceiver;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.net.ConnectivityManager;
 import android.os.Bundle;
 
 import androidx.cardview.widget.CardView;
@@ -13,9 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.studentnotifyapp.CheckInternet.InternetReceiver;
 import com.example.studentnotifyapp.R;
-import com.example.studentnotifyapp.StudentRegister;
 
 public class ActionsFragment extends Fragment {
 

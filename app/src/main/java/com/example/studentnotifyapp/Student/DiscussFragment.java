@@ -48,6 +48,7 @@ public class DiscussFragment extends BaseFragment {
 
     private List<MessageData> list;
     private MessageAdapter adapter;
+
     public DiscussFragment() {
         // Required empty public constructor
     }
@@ -56,7 +57,7 @@ public class DiscussFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v =  inflater.inflate(R.layout.fragment_discuss, container, false);
+        View v = inflater.inflate(R.layout.fragment_discuss, container, false);
 
         message = v.findViewById(R.id.message);
         sendMessage = v.findViewById(R.id.msg_send);
@@ -71,11 +72,9 @@ public class DiscussFragment extends BaseFragment {
                 String message1 = message.getText().toString().trim();
                 final String uniqueKey = reference.push().getKey();
 
-                if(message1.isEmpty())
-                {
+                if (message1.isEmpty()) {
                     message.setError("This field is not filled");
-                }
-                else {
+                } else {
                     Calendar calForDate = Calendar.getInstance();
                     SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd");
                     String date = currentDate.format(calForDate.getTime());
@@ -84,42 +83,56 @@ public class DiscussFragment extends BaseFragment {
                     SimpleDateFormat currentTime = new SimpleDateFormat("hh:mm a");
                     String time = currentTime.format(calForTime.getTime());
 
-                    String username = getActivity().getSharedPreferences("login",MODE_PRIVATE).getString("username","");
+                    String username = getActivity().getSharedPreferences("login", MODE_PRIVATE).getString("username", "");
+                    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("users");
 
-                    MessageData messageData = new MessageData(username,message1,date,time);
-                    reference.child(uniqueKey).setValue(messageData).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
-                        public void onSuccess(Void unused) {
-                            message.setText(null);
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            DataSnapshot userSnapshot = snapshot.child(username);
+
+                            String fullname = userSnapshot.child("fullname").getValue(String.class);
+
+                            MessageData messageData = new MessageData(fullname, username, message1, date, time);
+                            reference.child(uniqueKey).setValue(messageData).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+                                    message.setText(null);
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(getContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
+                                }
+                            });
                         }
-                    }).addOnFailureListener(new OnFailureListener() {
+
                         @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(getContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
+                        public void onCancelled(@NonNull DatabaseError error) {
+
                         }
                     });
-
                 }
             }
         });
         getMessage();
         return v;
     }
-    public void getMessage()
-    {
+
+    public void getMessage() {
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 list = new ArrayList<>();
-                for(DataSnapshot dataSnapshot : snapshot.getChildren()){
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     MessageData data = dataSnapshot.getValue(MessageData.class);
                     list.add(data);
                 }
-                adapter = new MessageAdapter(getContext(),list);
+                adapter = new MessageAdapter(getContext(), list);
                 msgRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
 
                 msgRecycler.setAdapter(adapter);
-                msgRecycler.scrollToPosition(list.size()-1);
+                msgRecycler.scrollToPosition(list.size() - 1);
             }
 
             @Override

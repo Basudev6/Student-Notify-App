@@ -42,7 +42,7 @@
             android:name=".Student.StudentPage"
             android:exported="false" />
         <activity
-            android:name=".StudentRegister"
+            android:name=".StudentSignup"
             android:exported="false" />
         <activity
             android:name=".Admin.AdminPage"

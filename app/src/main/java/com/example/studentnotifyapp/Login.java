@@ -154,7 +154,7 @@ public class Login extends BaseAcitvity {
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent signupIntent = new Intent(getApplicationContext(),StudentRegister.class);
+                Intent signupIntent = new Intent(getApplicationContext(), StudentSignup.class);
                 startActivity(signupIntent);
             }
         });

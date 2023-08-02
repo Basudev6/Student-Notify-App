@@ -40,6 +40,7 @@ public class Discuss extends BaseAcitvity {
 
     private List<MessageData> list;
     private MessageAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,60 +54,59 @@ public class Discuss extends BaseAcitvity {
         firebaseDatabase = FirebaseDatabase.getInstance();
         reference = firebaseDatabase.getReference("discuss");
 
-       sendMessage.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View view) {
-               String message1 = message.getText().toString().trim();
-               final String uniqueKey = reference.push().getKey();
+        sendMessage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String message1 = message.getText().toString().trim();
+                final String uniqueKey = reference.push().getKey();
 
-               if(message1.isEmpty())
-               {
-                   message.setError("This field is not filled");
-               }
-               else {
-                   Calendar calForDate = Calendar.getInstance();
-                   SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd");
-                   String date = currentDate.format(calForDate.getTime());
+                if (message1.isEmpty()) {
+                    message.setError("This field is not filled");
+                } else {
+                    Calendar calForDate = Calendar.getInstance();
+                    SimpleDateFormat currentDate = new SimpleDateFormat("yyyy-MM-dd");
+                    String date = currentDate.format(calForDate.getTime());
 
-                   Calendar calForTime = Calendar.getInstance();
-                   SimpleDateFormat currentTime = new SimpleDateFormat("hh:mm a");
-                   String time = currentTime.format(calForTime.getTime());
+                    Calendar calForTime = Calendar.getInstance();
+                    SimpleDateFormat currentTime = new SimpleDateFormat("hh:mm a");
+                    String time = currentTime.format(calForTime.getTime());
 
-                   String username = getSharedPreferences("login",MODE_PRIVATE).getString("username","");
+                    String username = getSharedPreferences("login", MODE_PRIVATE).getString("username", "");
 
-                   MessageData messageData = new MessageData(username,message1,date,time);
-                   reference.child(uniqueKey).setValue(messageData).addOnSuccessListener(new OnSuccessListener<Void>() {
-                       @Override
-                       public void onSuccess(Void unused) {
-                           message.setText(null);
-                       }
-                   }).addOnFailureListener(new OnFailureListener() {
-                       @Override
-                       public void onFailure(@NonNull Exception e) {
-                           Toast.makeText(Discuss.this, "Something went wrong", Toast.LENGTH_SHORT).show();
-                       }
-                   });
+                    String fullname = "Admin";
+                    MessageData messageData = new MessageData(fullname, username, message1, date, time);
+                    reference.child(uniqueKey).setValue(messageData).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            message.setText(null);
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(Discuss.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                        }
+                    });
 
-               }
-           }
-       });
-       getMessage();
+                }
+            }
+        });
+        getMessage();
     }
-    public void getMessage()
-    {
+
+    public void getMessage() {
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 list = new ArrayList<>();
-                for(DataSnapshot dataSnapshot : snapshot.getChildren()){
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     MessageData data = dataSnapshot.getValue(MessageData.class);
                     list.add(data);
                 }
-                adapter = new MessageAdapter(getApplicationContext(),list);
+                adapter = new MessageAdapter(getApplicationContext(), list);
                 msgRecycler.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
 
                 msgRecycler.setAdapter(adapter);
-                msgRecycler.scrollToPosition(list.size()-1);
+                msgRecycler.scrollToPosition(list.size() - 1);
             }
 
             @Override

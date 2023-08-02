@@ -5,7 +5,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import androidx.annotation.NonNull;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -18,7 +17,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class StudentRegister extends BaseAcitvity {
+public class StudentSignup extends BaseAcitvity {
 
     EditText fullname,username, address, phone, password,cpassword;
     Button signup;
@@ -29,7 +28,7 @@ public class StudentRegister extends BaseAcitvity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_student_register);
+        setContentView(R.layout.activity_student_signup);
 
         fullname = findViewById(R.id.stu_fullname);
         username = findViewById(R.id.stu_username);
@@ -53,11 +52,11 @@ public class StudentRegister extends BaseAcitvity {
 
                         if(username.getText().toString().trim().isEmpty())
                         {
-                            Toast.makeText(StudentRegister.this, "All field must be filled", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(StudentSignup.this, "All field must be filled", Toast.LENGTH_SHORT).show();
                         }
                         else if(snapshot.hasChild(username.getText().toString().trim()))
                         {
-                            Toast.makeText(StudentRegister.this, "Username already exists", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(StudentSignup.this, "Username already exists", Toast.LENGTH_SHORT).show();
                         }
                         else
                         {
@@ -82,14 +81,14 @@ public class StudentRegister extends BaseAcitvity {
     {
         String StudentFullname = fullname.getText().toString().trim();
         String StudentName = username.getText().toString().trim();
-        String StudentAddress = address.getText().toString();
-        String StudentPhone = phone.getText().toString();
+        String StudentAddress = address.getText().toString().trim();
+        String StudentPhone = phone.getText().toString().trim();
         String StudentPassword = password.getText().toString();
         String StudentCPassword = cpassword.getText().toString();
 
         if(StudentFullname.isEmpty() || StudentName.isEmpty() || StudentAddress.isEmpty() || StudentPassword.isEmpty())
         {
-            Toast.makeText(StudentRegister.this, "All field must be filled", Toast.LENGTH_SHORT).show();
+            Toast.makeText(StudentSignup.this, "All field must be filled", Toast.LENGTH_SHORT).show();
         }
         else if (StudentPhone.length()!=10) {
             phone.setError("Invalid password");
@@ -99,7 +98,7 @@ public class StudentRegister extends BaseAcitvity {
             password.setError("Password must be at least 8 character");
         }
 
-        else if (password.getText().toString().equals(cpassword.getText().toString())) {
+        else if (StudentPassword.equals(StudentCPassword)) {
             String StuHashPass;
             try {
                 StuHashPass = hashPassword(StudentPassword);
@@ -108,12 +107,12 @@ public class StudentRegister extends BaseAcitvity {
             }
             StudentData helperClass = new StudentData(StudentFullname, StudentName, StudentAddress, StudentPhone, StuHashPass,false);
             reference.child(StudentName).setValue(helperClass);
-            Toast.makeText(StudentRegister.this, "Student Registered Successfully. Wait for admin to approve.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(StudentSignup.this, "Student Registered Successfully. Wait for admin to approve.", Toast.LENGTH_SHORT).show();
             finish();
 
         }
         else {
-            Toast.makeText(StudentRegister.this, "Password and Confirm Password must be same", Toast.LENGTH_SHORT).show();
+            Toast.makeText(StudentSignup.this, "Password and Confirm Password must be same", Toast.LENGTH_SHORT).show();
         }
     }
     public String hashPassword(String pass) throws NoSuchAlgorithmException {
