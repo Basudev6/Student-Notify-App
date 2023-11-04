@@ -34,6 +34,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ProfileFragment extends BaseFragment {
 
@@ -152,7 +154,9 @@ public class ProfileFragment extends BaseFragment {
                     @Override
                     public void onClick(View view) {
                         String newPhone = phone.getText().toString().trim();
-                        if(newPhone.length()==10)
+                        Pattern pattern = Pattern.compile("^98\\d{8}$");
+                        Matcher matcher = pattern.matcher(newPhone);
+                        if(matcher.matches())
                         {
                             databaseReference.child(username).child("phone").setValue(newPhone).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override

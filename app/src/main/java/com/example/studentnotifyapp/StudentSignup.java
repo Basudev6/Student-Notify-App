@@ -3,6 +3,9 @@ package com.example.studentnotifyapp;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import androidx.annotation.NonNull;
 
 import android.os.Bundle;
@@ -58,6 +61,10 @@ public class StudentSignup extends BaseAcitvity {
                         {
                             Toast.makeText(StudentSignup.this, "Username already exists", Toast.LENGTH_SHORT).show();
                         }
+                        else if(snapshot.getChildrenCount()>28)
+                        {
+                            Toast.makeText(StudentSignup.this, "Student seat is full, Please contact to the admin", Toast.LENGTH_SHORT).show();
+                        }
                         else
                         {
                             Signup();
@@ -86,12 +93,23 @@ public class StudentSignup extends BaseAcitvity {
         String StudentPassword = password.getText().toString();
         String StudentCPassword = cpassword.getText().toString();
 
-        if(StudentFullname.isEmpty() || StudentName.isEmpty() || StudentAddress.isEmpty() || StudentPassword.isEmpty())
+        Pattern phonePattern = Pattern.compile("^98\\d{8}$");
+        Matcher phoneMatcher = phonePattern.matcher(StudentPhone);
+
+        Pattern fullnamePattern = Pattern.compile("^[A-Za-z]+$");
+        Matcher fullnameMatcher = fullnamePattern.matcher(StudentFullname);
+
+
+        if(StudentName.isEmpty() || StudentAddress.isEmpty() || StudentPassword.isEmpty())
         {
             Toast.makeText(StudentSignup.this, "All field must be filled", Toast.LENGTH_SHORT).show();
         }
-        else if (StudentPhone.length()!=10) {
-            phone.setError("Invalid password");
+        else if (!fullnameMatcher.matches())
+        {
+            fullname.setError("Invalid Name");
+        }
+        else if (!phoneMatcher.matches()) {
+            phone.setError("Invalid phone number");
         }
         else if(StudentPassword.length()<8)
         {

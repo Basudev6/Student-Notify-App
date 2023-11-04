@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.studentnotifyapp.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PdfAdapter extends RecyclerView.Adapter<PdfAdapter.PdfViewHolder> {
@@ -61,6 +62,12 @@ public class PdfAdapter extends RecyclerView.Adapter<PdfAdapter.PdfViewHolder> {
 
         return list.size();
     }
+
+    public void Filteredlist(ArrayList<PdfData> filterList) {
+        list = filterList;
+        notifyDataSetChanged();
+    }
+
     public class PdfViewHolder extends RecyclerView.ViewHolder{
 
         private TextView pdfName;

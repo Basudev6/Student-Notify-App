@@ -8,9 +8,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -24,12 +27,13 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 
 public class ViewPdfFragment extends BaseFragment {
 
 
-
+    EditText searchNote;
     private RecyclerView pdfRecycler;
     private DatabaseReference reference;
     private List<PdfData> list;
@@ -56,6 +60,8 @@ public class ViewPdfFragment extends BaseFragment {
 
         pdfRecycler = v.findViewById(R.id.pdfRecycler);
         reference = FirebaseDatabase.getInstance().getReference().child("pdf");
+
+        searchNote = v.findViewById(R.id.search);
         getData();
         return v;
     }
@@ -74,6 +80,7 @@ public class ViewPdfFragment extends BaseFragment {
                 pdfRecycler.setLayoutManager(new LinearLayoutManager(getContext()));
                 pd.dismiss();
                 pdfRecycler.setAdapter(adapter);
+                searchNote.setVisibility(View.VISIBLE);
 
             }
 
@@ -84,5 +91,34 @@ public class ViewPdfFragment extends BaseFragment {
                 Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+
+        searchNote.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+                filter(editable.toString());
+            }
+        });
+    }
+
+    private void filter(String text) {
+        ArrayList<PdfData> filterList = new ArrayList<>();
+        for(PdfData item : list)
+        {
+            if(item.getPdfTitle().toLowerCase().contains(text.toLowerCase())){
+                filterList.add(item);
+            }
+        }
+        adapter.Filteredlist(filterList);
     }
 }

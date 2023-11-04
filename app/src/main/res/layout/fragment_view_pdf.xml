@@ -8,15 +8,19 @@
     tools:context=".Student.ViewPdfFragment">
 
 
-
-    <TextView
-        android:layout_width="wrap_content"
+    <EditText
+        android:id="@+id/search"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Notes"
-        android:textSize="20dp"
-        android:layout_gravity="center"
-        android:textStyle="bold"
-        android:layout_marginBottom="5dp"
+        android:hint="Search here"
+        android:layout_margin="5dp"
+        android:padding="5dp"
+        android:textSize="20sp"
+        android:drawableLeft="@drawable/baseline_search_24"
+        android:drawablePadding="10dp"
+        android:background="@drawable/edit_text"
+        android:visibility="gone"
+
         />
 
     <androidx.recyclerview.widget.RecyclerView

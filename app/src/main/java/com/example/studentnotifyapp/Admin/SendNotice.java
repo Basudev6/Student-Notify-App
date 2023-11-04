@@ -151,7 +151,7 @@ public class SendNotice extends BaseAcitvity {
         SimpleDateFormat currentTime = new SimpleDateFormat("hh:mm a");
         String time = currentTime.format(calForTime.getTime());
 
-        String titleNotice = title.getText().toString();
+        final String titleNotice = title.getText().toString();
         String textNotice =  notice.getText().toString();
 
         ImageNoticeData imageNoticeData = new ImageNoticeData(titleNotice,textNotice,downloadUrl,date,time);

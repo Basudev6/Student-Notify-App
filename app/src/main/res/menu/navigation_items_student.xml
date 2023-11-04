@@ -18,6 +18,11 @@
         android:icon="@drawable/discuss"
         />
     <item
+        android:id="@+id/Student_Reminder"
+        android:title="Reminder"
+        android:icon="@drawable/reminder"
+        />
+    <item
         android:id="@+id/Student_Profile"
         android:title="View Profile"
         android:icon="@drawable/profile"
